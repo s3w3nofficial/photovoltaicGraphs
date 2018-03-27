@@ -7,9 +7,9 @@ app = Flask(__name__)
 def index():
     return render_template("index.html")
 
-@app.route('/graph', methods=['POST'])
-def showGraph(data):
-    return jsonify({"success":"true"})
+@app.route('/graph', methods=['POST', 'GET'])
+def showGraph():
+    return render_template("graph.html")
 
 if __name__ == "__main__":
     app.run(debug=True)

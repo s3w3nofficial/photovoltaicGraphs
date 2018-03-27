@@ -1,3 +1,4 @@
+DEPRECATION: The default format will switch to columns in the future. You can use --format=(legacy|columns) (or define a format=(legacy|columns) in your pip.conf under the [list] section) to disable this warning.
 astroid (1.6.2)
 click (6.7)
 Flask (0.12.2)
