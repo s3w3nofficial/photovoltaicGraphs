@@ -11,9 +11,9 @@ def index():
 def downloadlocaldata(url, datestart, dateend):
     pass
 
-@app.route('/graph', methods=['POST'])
-def showGraph(data):
-    return jsonify({"success":"true"})
+@app.route('/graph', methods=['POST', 'GET'])
+def showGraph():
+    return render_template("graph.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
