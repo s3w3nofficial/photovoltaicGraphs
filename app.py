@@ -27,6 +27,9 @@ def fetchlocaldata(urlTmpl, format, datestart, dateend):
         date += delta
     return basepath
 
+def readCSV(PATH):
+    data = pd.read_csv(PATH, usecols=[0, 1], skiprows=10, skipfooter=10, engine='python', skip_blank_lines=True)
+
 @app.route('/graph', methods=['POST', 'GET'])
 def showGraph():
     return render_template("graph.html")
