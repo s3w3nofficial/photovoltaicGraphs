@@ -12,11 +12,11 @@ app = Flask(__name__)
 def index():
     return render_template("index.html")
 
-def fetchlocaldata(urlTmpl, format, datestart, dateend):
-    # Returns directory name with fetched local data. Caller is responsible for its deletion.
+def fetchlocaldata(basepath, urlTmpl, format, datestart, dateend):
+    # Fills directory with data from local server
     date = datestart
     delta = timedelta(days=1)
-    basepath = tempfile.mkdtemp()
+    #basepath = tempfile.mkdtemp()
     while date < dateend:
         filename = date.strftime(format)
         url = '%s/%s' % (urlTmpl, filename)
@@ -27,10 +27,33 @@ def fetchlocaldata(urlTmpl, format, datestart, dateend):
         date += delta
     return basepath
 
+def fetchremotedata(basepath='/tmp', raddatabase="PVGIS-CMASF", lat=50, lon=15, mountingplace="free", angle=0, azimuth=0, startyear=2007, endyear=2016, pvtech="crystSi", peakpower=0, loss=0):
+    # lat, lon, raddatabase, hourlyangle (aka angle), hourlyaspect (aka azimuth), startyear, endyear, mountingplace, pvtechchoice, peakpower, loss
+    url = 'http://re.jrc.ec.europa.eu/pvgis5/seriescalc.php'
+    payload = {
+        'lat': lat,
+        'lon': lon,
+        'mountingplace': mountingplace,
+        'hourlyangle': angle,
+        'hourlyaspect': azimuth,
+        'startyear': startyear,
+        'endyear': endyear,
+        'pvtechchoice': pvtech,
+        'peakpower': peakpower,
+        'loss': loss,
+        'browser': 1,
+    }
+    r = requests.get(url, params=payload)
+    r.raw.decode_content = True
+    with open(os.path.join(basepath, 'remotedata.csv')) as f:
+        shutil.copyfileobj(r.raw, f)
+    return os.path.join(basepath, 'remotedata.csv')
+
+
 def readCSV(PATH):
     data = pd.read_csv(PATH, usecols=[0, 1], skiprows=10, skipfooter=10, engine='python', skip_blank_lines=True)
 
-@app.route('/graph', methods=['POST', 'GET'])
+@app.route('/graph')
 def showGraph():
     return render_template("graph.html")
 
