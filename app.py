@@ -7,6 +7,7 @@ import requests
 import os
 
 app = Flask(__name__)
+requests.utils.default_user_agent = lambda: "Kyberna school project, https://kyberna.cz, urbanec.martin@ssakhk.cz"
 
 @app.route('/')
 def index():
