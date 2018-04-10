@@ -44,7 +44,7 @@ def fetchremotedata(basepath='/tmp', raddatabase="PVGIS-CMASF", lat=50, lon=15, 
     }
     r = requests.get(url, params=payload)
     r.raw.decode_content = True
-    with open(os.path.join(basepath, 'remotedata.csv')) as f:
+    with open(os.path.join(basepath, 'remotedata.csv'), 'wb') as f:
         shutil.copyfileobj(r.raw, f)
     return os.path.join(basepath, 'remotedata.csv')
 
