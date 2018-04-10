@@ -12,7 +12,7 @@ app = Flask(__name__)
 def index():
     return render_template("index.html")
 
-def fetchlocaldata(basepath, urlTmpl, format, datestart, dateend):
+def fetchlocaldata(basepath='/tmp', urlTmpl='http://is.ssakhk.cz/graf', format='%Y_%m_%d.txt', datestart=date(2012, 1, 1), dateend=date(2013, 1, 1)):
     # Fills directory with data from local server
     date = datestart
     delta = timedelta(days=1)
@@ -28,7 +28,6 @@ def fetchlocaldata(basepath, urlTmpl, format, datestart, dateend):
     return basepath
 
 def fetchremotedata(basepath='/tmp', raddatabase="PVGIS-CMASF", lat=50, lon=15, mountingplace="free", angle=0, azimuth=0, startyear=2007, endyear=2016, pvtech="crystSi", peakpower=0, loss=0):
-    # lat, lon, raddatabase, hourlyangle (aka angle), hourlyaspect (aka azimuth), startyear, endyear, mountingplace, pvtechchoice, peakpower, loss
     url = 'http://re.jrc.ec.europa.eu/pvgis5/seriescalc.php'
     payload = {
         'lat': lat,
